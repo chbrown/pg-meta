@@ -1,0 +1,25 @@
+{
+  "name": "pg-meta",
+  "version": "0.0.0",
+  "description": "PostgreSQL metadata aggregator",
+  "keywords": [
+    "metadata",
+    "database",
+    "postgres",
+    "psql"
+  ],
+  "homepage": "https://github.com/chbrown/pg-meta",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chbrown/pg-meta.git"
+  },
+  "license": "MIT",
+  "author": "Christopher Brown <io@henrian.com> (http://henrian.com)",
+  "dependencies": {
+    "pg": "*"
+  },
+  "devDependencies": {
+    "declarations": "*",
+    "typescript": "*"
+  }
+}

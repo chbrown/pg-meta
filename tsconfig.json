@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "ES6"
+  },
+  "files": [
+    "node_modules/declarations/pg/pg.d.ts",
+    "index.ts",
+    "information_schema.ts",
+    "pg_catalog.ts",
+    "types.ts"
+  ]
+}
