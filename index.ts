@@ -42,6 +42,7 @@ export function relations(config: ConnectionConfig): Promise<Relation[]> {
       FROM pg_catalog.pg_attribute
         LEFT JOIN pg_catalog.pg_attrdef ON adrelid = attrelid AND attnum = adnum
       WHERE attnum > 0 AND NOT attisdropped
+      ORDER BY attnum
     ), attributes_agg AS (
       SELECT attrelid, jsonb_agg(attributes.*) AS attributes FROM attributes GROUP BY attrelid
     ), constraints AS (
