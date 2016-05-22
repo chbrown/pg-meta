@@ -40,13 +40,19 @@ export interface ConnectionConfig {
 *******************************************************************************/
 
 export interface RelationAttribute {
-  /** The column name */
+  /** parent table (references pg_catalog.pg_class(oid)) */
+  attrelid?: string;
+  /** column name */
   attname: string;
-  /** The number of the column. */
+  /** number of column */
   attnum: number;
-  /** The data type of this column as described by format_type. */
-  atttyp: string;
-  /** This represents a not-null constraint. */
+  /** data type (references pg_catalog.pg_type(oid)) */
+  atttypid: string;
+  /** data type modifier of this column */
+  atttypmod: number;
+  /** "SQL name" of this data type, using format_type */
+  atttypfmt?: string;
+  /** This represents a not-null constraint */
   attnotnull: boolean;
   /** A human-readable representation of the default value */
   adsrc?: string;

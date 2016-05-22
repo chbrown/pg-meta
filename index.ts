@@ -38,7 +38,8 @@ Maybe add to WHERE: pg_catalog.pg_table_is_visible(oid)
 export function relations(config: ConnectionConfig): Promise<Relation[]> {
   return query<Relation>(config, `
     WITH attributes AS (
-      SELECT attrelid, attname, attnum, format_type(atttypid, atttypmod) AS atttyp, attnotnull, adsrc
+      SELECT attrelid, attname, attnum, atttypid, atttypmod, attnotnull, adsrc,
+        format_type(atttypid, atttypmod) AS atttypfmt
       FROM pg_catalog.pg_attribute
         LEFT JOIN pg_catalog.pg_attrdef ON adrelid = attrelid AND attnum = adnum
       WHERE attnum > 0 AND NOT attisdropped
@@ -99,11 +100,8 @@ attisdropped is TRUE for recently (but not yet fully vacuumed) dropped columns.
 export function attributes(config: ConnectionConfig, relid: string) {
   // -- would also need to grab attrelid if we were doing a `WHERE attrelid = ANY($1)` query
   return query<RelationAttribute>(config, `
-    SELECT attname,
-      attnum,
-      format_type(atttypid, atttypmod) AS atttyp,
-      attnotnull,
-      adsrc
+    SELECT attrelid, attname, attnum, atttypid, atttypmod, attnotnull, adsrc,
+        format_type(atttypid, atttypmod) AS atttypfmt
     FROM pg_catalog.pg_attribute
       LEFT OUTER JOIN pg_catalog.pg_attrdef ON adrelid = attrelid AND attnum = adnum
     WHERE attrelid = $1 AND attnum > 0 AND NOT attisdropped
