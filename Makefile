@@ -1,6 +1,6 @@
 BIN := node_modules/.bin
 TYPESCRIPT := $(shell jq -r '.files[]' tsconfig.json | grep -Fv .d.ts)
-DERIVED = $(TYPESCRIPT:%.ts=%.js) $(TYPESCRIPT:%.ts=%.d.ts)
+DERIVED := $(TYPESCRIPT:%.ts=%.js) $(TYPESCRIPT:%.ts=%.d.ts)
 
 all: $(DERIVED) .gitignore .npmignore
 
