@@ -16,10 +16,10 @@
   "license": "MIT",
   "author": "Christopher Brown <io@henrian.com> (http://henrian.com)",
   "dependencies": {
-    "pg": "*"
+    "pg": "4.5.5"
   },
   "devDependencies": {
-    "declarations": "*",
-    "typescript": "*"
+    "declarations": "0.1.14",
+    "typescript": "1.8.10"
   }
 }
