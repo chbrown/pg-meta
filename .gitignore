@@ -1,8 +1,2 @@
-index.js
-information_schema.js
-pg_catalog.js
-types.js
-index.d.ts
-information_schema.d.ts
-pg_catalog.d.ts
-types.d.ts
+*.js
+*.d.ts

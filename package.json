@@ -21,5 +21,8 @@
   "devDependencies": {
     "declarations": "0.1.14",
     "typescript": "1.8.10"
+  },
+  "scripts": {
+    "clean": "tsc -d --listEmittedFiles | sed 's/^TSFILE: //' | xargs rm -v"
   }
 }
