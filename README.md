@@ -7,4 +7,5 @@ PostgreSQL annotated types and metadata aggregation functions.
 
 ## License
 
-Copyright 2016 Christopher Brown. [MIT Licensed](http://chbrown.github.io/licenses/MIT/#2016)
+Copyright 2016–2018 Christopher Brown.
+[MIT Licensed](https://chbrown.github.io/licenses/MIT/#2016-2018)
