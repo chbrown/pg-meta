@@ -1,5 +1,4 @@
 import {connect} from 'pg';
-import {inspect} from 'util';
 
 import {ConnectionConfig, QueryResult, Relation, RelationAttribute, RelationConstraint} from './types';
 import {PgDatabase} from './pg_catalog';
