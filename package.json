@@ -9,10 +9,7 @@
     "psql"
   ],
   "homepage": "https://github.com/chbrown/pg-meta",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/chbrown/pg-meta.git"
-  },
+  "repository": "github:chbrown/pg-meta",
   "license": "MIT",
   "author": "Christopher Brown <io@henrian.com> (http://henrian.com)",
   "dependencies": {
