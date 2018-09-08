@@ -13,11 +13,11 @@
   "license": "MIT",
   "author": "Christopher Brown <io@henrian.com> (http://henrian.com)",
   "dependencies": {
-    "pg": "4.5.5"
+    "pg": "^6.4.2"
   },
   "devDependencies": {
-    "declarations": "0.1.14",
-    "typescript": "1.8.10"
+    "@types/pg": "^6.1.47",
+    "typescript": "3.0.3"
   },
   "scripts": {
     "clean": "tsc -d --listEmittedFiles | sed 's/^TSFILE: //' | xargs rm -v"
