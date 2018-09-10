@@ -1,32 +1,32 @@
-import {connect} from 'pg';
+import {connect} from 'pg'
 
-import {ConnectionConfig, QueryResult, Relation, RelationAttribute, RelationConstraint} from './types';
-import {PgDatabase} from './pg_catalog';
+import {ConnectionConfig, QueryResult, Relation, RelationAttribute, RelationConstraint} from './types'
+import {PgDatabase} from './pg_catalog'
 
 export async function query<T>(config: ConnectionConfig, queryText: string, values: any[] = []) {
   return new Promise<QueryResult<T>>((resolve, reject) => {
     connect(config, (connectErr, client, done) => {
       if (connectErr) {
-        done(connectErr);
-        return reject(connectErr);
+        done(connectErr)
+        return reject(connectErr)
       }
       client.query(queryText, values, (queryErr, result) => {
         if (queryErr) {
-          done(queryErr);
-          return reject(queryErr);
+          done(queryErr)
+          return reject(queryErr)
         }
-        done();
-        resolve(result as QueryResult<T>);
-      });
-    });
-  });
+        done()
+        resolve(result as QueryResult<T>)
+      })
+    })
+  })
 }
 
 /**
 Return a list of the databases accessible in the given PostgreSQL server.
 */
 export async function databases(config: ConnectionConfig) {
-  return query<PgDatabase>(config, 'SELECT * FROM pg_catalog.pg_database ORDER BY datname').then(({rows}) => rows);
+  return query<PgDatabase>(config, 'SELECT * FROM pg_catalog.pg_database ORDER BY datname').then(({rows}) => rows)
 }
 
 /**
@@ -85,7 +85,7 @@ export async function relations(config: ConnectionConfig): Promise<Relation[]> {
       LEFT JOIN attributes_agg ON attributes_agg.attrelid = relations.relid
       LEFT JOIN constraints_agg ON constraints_agg.conrelid = relations.relid
     ORDER BY relid
-  `).then(({rows}) => rows);
+  `).then(({rows}) => rows)
 }
 
 /**
@@ -104,7 +104,7 @@ export async function attributes(config: ConnectionConfig, relid: string) {
     FROM pg_catalog.pg_attribute
       LEFT OUTER JOIN pg_catalog.pg_attrdef ON adrelid = attrelid AND attnum = adnum
     WHERE attrelid = $1 AND attnum > 0 AND NOT attisdropped
-  `, [relid]).then(({rows}) => rows);
+  `, [relid]).then(({rows}) => rows)
 }
 
 /**
@@ -131,7 +131,7 @@ export async function constraints(config: ConnectionConfig, relid: string) {
       LEFT OUTER JOIN pg_catalog.pg_attribute AS fkeyatt ON attrelid = confrelid AND attnum = ANY(confkey)
     WHERE conrelid = $1
     GROUP BY pg_constraint.oid, conname, contype, confrelid, conkey
-  `, [relid]).then(({rows}) => rows);
+  `, [relid]).then(({rows}) => rows)
 }
 
 /**
@@ -139,6 +139,6 @@ Vulnerable to SQL injection via the 'table' argument.
 */
 export async function count(config: ConnectionConfig, table: string) {
   return query<{count: number}>(config, `SELECT COUNT(*) FROM ${table}`).then(({rows}) => {
-    return rows[0].count;
-  });
+    return rows[0].count
+  })
 }
