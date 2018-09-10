@@ -3,17 +3,17 @@ import {connect} from 'pg';
 import {ConnectionConfig, QueryResult, Relation, RelationAttribute, RelationConstraint} from './types';
 import {PgDatabase} from './pg_catalog';
 
-export function query<T>(config: ConnectionConfig, queryText: string, values: any[] = []) {
+export async function query<T>(config: ConnectionConfig, queryText: string, values: any[] = []) {
   return new Promise<QueryResult<T>>((resolve, reject) => {
-    connect(config, (err, client, done) => {
-      if (err) {
-        done(err);
-        return reject(err);
+    connect(config, (connectErr, client, done) => {
+      if (connectErr) {
+        done(connectErr);
+        return reject(connectErr);
       }
-      client.query(queryText, values, (err, result) => {
-        if (err) {
-          done(err);
-          return reject(err);
+      client.query(queryText, values, (queryErr, result) => {
+        if (queryErr) {
+          done(queryErr);
+          return reject(queryErr);
         }
         done();
         resolve(result as QueryResult<T>);
@@ -25,7 +25,7 @@ export function query<T>(config: ConnectionConfig, queryText: string, values: an
 /**
 Return a list of the databases accessible in the given PostgreSQL server.
 */
-export function databases(config: ConnectionConfig) {
+export async function databases(config: ConnectionConfig) {
   return query<PgDatabase>(config, 'SELECT * FROM pg_catalog.pg_database ORDER BY datname').then(({rows}) => rows);
 }
 
@@ -34,7 +34,7 @@ params should contain a {database: string} entry
 
 Maybe add to WHERE: pg_catalog.pg_table_is_visible(oid)
 */
-export function relations(config: ConnectionConfig): Promise<Relation[]> {
+export async function relations(config: ConnectionConfig): Promise<Relation[]> {
   return query<Relation>(config, `
     WITH attributes AS (
       SELECT attrelid, attname, attnum, atttypid, atttypmod, attnotnull, adsrc,
@@ -96,7 +96,7 @@ dealing with variable length or otherwise parameterized types (e.g., varchar).
 attnum is negative for system attributes, e.g., 'tableoid', 'cmax', 'ctid', etc.
 attisdropped is TRUE for recently (but not yet fully vacuumed) dropped columns.
 */
-export function attributes(config: ConnectionConfig, relid: string) {
+export async function attributes(config: ConnectionConfig, relid: string) {
   // -- would also need to grab attrelid if we were doing a `WHERE attrelid = ANY($1)` query
   return query<RelationAttribute>(config, `
     SELECT attrelid, attname, attnum, atttypid, atttypmod, attnotnull, adsrc,
@@ -113,7 +113,7 @@ Get the constraints associated with the table designated by {relid}.
 Returns a list of constraints, each of which has a conkey: number[] field,
 indicating which of the columns it depends on.
 */
-export function constraints(config: ConnectionConfig, relid: string) {
+export async function constraints(config: ConnectionConfig, relid: string) {
   return query<RelationConstraint>(config, `
     SELECT conname,
       CASE contype
@@ -137,7 +137,7 @@ export function constraints(config: ConnectionConfig, relid: string) {
 /**
 Vulnerable to SQL injection via the 'table' argument.
 */
-export function count(config: ConnectionConfig, table: string) {
+export async function count(config: ConnectionConfig, table: string) {
   return query<{count: number}>(config, `SELECT COUNT(*) FROM ${table}`).then(({rows}) => {
     return rows[0].count;
   });

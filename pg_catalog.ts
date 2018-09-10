@@ -55,17 +55,17 @@ export interface PgDatabase {
 /** Table "pg_catalog.pg_tables" (http://www.postgresql.org/docs/current/static/view-pg-tables.html) */
 export interface PgTable {
   /** Name of schema containing table (references pg_namespace.nspname) */
-  schemaname:  name;
+  schemaname: name;
   /** Name of table (references pg_class.relname) */
-  tablename:   name;
+  tablename: name;
   /** Name of table's owner (references pg_authid.rolname) */
-  tableowner:  name;
+  tableowner: name;
   /** Name of tablespace containing table (null if default for database) (references pg_tablespace.spcname) */
-  tablespace:  name;
+  tablespace: name;
   /** True if table has (or recently had) any indexes (references pg_class.relhasindex) */
-  hasindexes:  boolean;
+  hasindexes: boolean;
   /** True if table has (or once had) rules (references pg_class.relhasrules) */
-  hasrules:    boolean;
+  hasrules: boolean;
   /** True if table has (or once had) triggers (references pg_class.relhastriggers) */
   hastriggers: boolean;
   /** True if row security is enabled on the table (references pg_class.relrowsecurity) */
