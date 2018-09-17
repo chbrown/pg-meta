@@ -1,4 +1,5 @@
 *.ts
 !*.d.ts
+.travis.yml
 test
 tsconfig.json
