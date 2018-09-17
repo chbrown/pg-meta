@@ -65,7 +65,10 @@ export async function relations(config: ConnectionConfig): Promise<Relation[]> {
     ), constraints_agg AS (
       SELECT conrelid, jsonb_agg(constraints.*) AS constraints FROM constraints GROUP BY conrelid
     ), relations AS (
-      SELECT oid AS relid, relname,
+      SELECT pg_class.oid AS relid,
+        relname,
+        pg_namespace.nspname AS relnamespace,
+        pg_authid.rolname AS relowner,
         CASE relkind
           WHEN 'r' THEN 'ordinary table'
           WHEN 'i' THEN 'index'
@@ -77,10 +80,14 @@ export async function relations(config: ConnectionConfig): Promise<Relation[]> {
           WHEN 'f' THEN 'foreign table'
         END AS relkind
       FROM pg_catalog.pg_class
-      WHERE relnamespace IN (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname NOT IN
-        ('pg_toast', 'pg_temp_1', 'pg_toast_temp_1', 'pg_catalog', 'information_schema'))
+      INNER JOIN pg_catalog.pg_namespace ON pg_namespace.oid = pg_class.relnamespace
+      INNER JOIN pg_catalog.pg_authid ON pg_authid.oid = pg_class.relowner
+      WHERE pg_namespace.nspname NOT IN
+        ('pg_toast', 'pg_temp_1', 'pg_toast_temp_1', 'pg_catalog', 'information_schema')
     )
-    SELECT relid, relname, relkind, attributes_agg.attributes, constraints_agg.constraints
+    SELECT relations.*,
+      attributes_agg.attributes,
+      constraints_agg.constraints
     FROM relations
       LEFT JOIN attributes_agg ON attributes_agg.attrelid = relations.relid
       LEFT JOIN constraints_agg ON constraints_agg.conrelid = relations.relid

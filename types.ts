@@ -78,6 +78,10 @@ export interface Relation {
   relid: string
   /** equivalent to pg_class.relname */
   relname: string
+  /** derived from pg_class.relnamespace -> pg_namespace.nspname */
+  relnamespace: string
+  /** derived from pg_class.relowner -> pg_authid.rolname */
+  relowner: string
   /** one of: 'ordinary table', 'index', 'sequence', 'view',
   'materialized view', 'composite type', 'TOAST table', 'foreign table' */
   relkind: string
