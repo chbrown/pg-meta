@@ -41,7 +41,8 @@ export async function relations(config: ConnectionConfig): Promise<Relation[]> {
         format_type(atttypid, atttypmod) AS atttypfmt
       FROM pg_catalog.pg_attribute
         LEFT JOIN pg_catalog.pg_attrdef ON adrelid = attrelid AND attnum = adnum
-      WHERE attnum > 0 AND NOT attisdropped
+      WHERE attnum > 0
+        AND NOT attisdropped
       ORDER BY attnum
     ), attributes_agg AS (
       SELECT attrelid, jsonb_agg(attributes.*) AS attributes FROM attributes GROUP BY attrelid
@@ -107,10 +108,13 @@ export async function attributes(config: ConnectionConfig, relid: string) {
   // -- would also need to grab attrelid if we were doing a `WHERE attrelid = ANY($1)` query
   return query<RelationAttribute>(config, `
     SELECT attrelid, attname, attnum, atttypid, atttypmod, attnotnull, adsrc,
-        format_type(atttypid, atttypmod) AS atttypfmt
+      format_type(atttypid, atttypmod) AS atttypfmt
     FROM pg_catalog.pg_attribute
       LEFT OUTER JOIN pg_catalog.pg_attrdef ON adrelid = attrelid AND attnum = adnum
-    WHERE attrelid = $1 AND attnum > 0 AND NOT attisdropped
+    WHERE attnum > 0
+      AND NOT attisdropped
+      AND attrelid = $1
+    ORDER BY attnum
   `, [relid]).then(({rows}) => rows)
 }
 
