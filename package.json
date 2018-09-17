@@ -13,10 +13,10 @@
   "license": "MIT",
   "author": "Christopher Brown <io@henrian.com> (http://henrian.com)",
   "dependencies": {
-    "pg": "^6.4.2"
+    "pg": "^7.4.3"
   },
   "devDependencies": {
-    "@types/pg": "^6.1.47",
+    "@types/pg": "7.4.10",
     "ava": "1.0.0-beta.8",
     "coveralls": "3.0.2",
     "nyc": "13.0.1",

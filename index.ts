@@ -1,25 +1,14 @@
-import {connect} from 'pg'
+import {Client} from 'pg'
 
 import {ConnectionConfig, QueryResult, Relation, RelationAttribute, RelationConstraint} from './types'
 import {PgDatabase} from './pg_catalog'
 
 export async function query<T>(config: ConnectionConfig, queryText: string, values: any[] = []) {
-  return new Promise<QueryResult<T>>((resolve, reject) => {
-    connect(config, (connectErr, client, done) => {
-      if (connectErr) {
-        done(connectErr)
-        return reject(connectErr)
-      }
-      client.query(queryText, values, (queryErr, result) => {
-        if (queryErr) {
-          done(queryErr)
-          return reject(queryErr)
-        }
-        done()
-        resolve(result as QueryResult<T>)
-      })
-    })
-  })
+  const client = new Client(config)
+  await client.connect()
+  const result = await client.query(queryText, values)
+  await client.end()
+  return result as QueryResult<T>
 }
 
 /**
