@@ -6,6 +6,6 @@ node_js:
 services:
   - postgresql
 addons:
-  postgresql: "10"
+  postgresql: "9.6"
 before_script:
   - psql -c 'CREATE DATABASE "pg-meta-test";' -U postgres
