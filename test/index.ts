@@ -20,7 +20,7 @@ test('databases', async t => {
 
 test('relations', async t => {
   const test_relations = await relations(test_config)
-  t.is(test_relations.length, 2, 'list of relations should have two entries')
+  t.is(test_relations.length, 1, 'list of relations should have one entry')
 })
 
 test('attributes', async t => {
