@@ -5,5 +5,7 @@ node_js:
   - 6
 services:
   - postgresql
+addons:
+  postgresql: "10"
 before_script:
   - createdb pg-meta-test
