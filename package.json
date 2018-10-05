@@ -27,6 +27,6 @@
     "pretest": "tsc",
     "test": "nyc ava",
     "posttest": "nyc report --reporter=text-lcov | coveralls || true",
-    "clean": "tsc --listEmittedFiles | sed 's/^TSFILE: //' | xargs rm -v"
+    "clean": "tsc -b --clean"
   }
 }
