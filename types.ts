@@ -61,10 +61,13 @@ export interface RelationAttribute {
 export interface RelationConstraint {
   /** constraint name (not necessarily unique) */
   conname: string
-  /** one of: 'check constraint', 'foreign key constraint',
-  'primary key constraint', 'unique constraint', 'constraint trigger',
-  'exclusion constraint' */
-  contype: string
+  /** enumeration */
+  contype: 'check constraint' |
+           'foreign key constraint' |
+           'primary key constraint' |
+           'unique constraint' |
+           'constraint trigger' |
+           'exclusion constraint'
   /** 1-based indices of the constrained columns */
   conkey: number[]
   /** name of the foreign-referenced relation */
@@ -82,9 +85,15 @@ export interface Relation {
   relnamespace: string
   /** derived from pg_class.relowner -> pg_authid.rolname */
   relowner: string
-  /** one of: 'ordinary table', 'index', 'sequence', 'view',
-  'materialized view', 'composite type', 'TOAST table', 'foreign table' */
-  relkind: string
+  /** enumeration */
+  relkind: 'ordinary table' |
+           'index' |
+           'sequence' |
+           'view' |
+           'materialized view' |
+           'composite type' |
+           'TOAST table' |
+           'foreign table'
   attributes: RelationAttribute[]
   constraints: RelationConstraint[]
 }
