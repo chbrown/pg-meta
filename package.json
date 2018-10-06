@@ -1,6 +1,6 @@
 {
   "name": "pg-meta",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "PostgreSQL metadata aggregator",
   "keywords": [
     "metadata",
